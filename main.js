@@ -1,5 +1,7 @@
 $(document).ready(function() {
+    moment.locale('it');
 
+    
     var url_chiamata = "http://157.230.17.132:4034/sales";
 
 
@@ -21,9 +23,43 @@ $(document).ready(function() {
     });
 
 
-    function grafico_vendite_mensili() {
-        
-    };
+    function grafico_vendite_mensili(etichette, dati) {
+        var myChart = new Chart($('#grafico-vendite-mensili')[0].getContext('2d'), {
+             type: 'line',
+             data: {
+                 labels: etichette,
+                 datasets: [{
+                     label: 'importi vendite',
+                     data: dati,
+                     pointBackgroundColor: 'rgba(255, 99, 132, 1)',
+                     pointBorderColor: 'rgba(255, 99, 132, 1)',
+                     borderColor: 'rgba(75, 192, 192, 1)',
+                     borderWidth: 3,
+                     fill: false
+                 }]
+             },
+             options: {
+                 scales: {
+                     yAxes: [{
+                         ticks: {
+                             beginAtZero: true
+                         }
+                     }]
+                 },
+                 tooltips: {
+                     callbacks: {
+                         label: function(tooltipItem, data) {
+                             var label = data.datasets[tooltipItem.datasetIndex].label + ': ';
+                             label += tooltipItem.yLabel;
+                             label += ' €';
+                             return label;
+                         }
+                     }
+                 }
+             }
+         });
+     };
+
 
     function funzione_vendite_mensili(dati) {
         var vendite_mensili = {
@@ -52,4 +88,4 @@ $(document).ready(function() {
 
         return vendite_mensili;
     };
-})
+});
